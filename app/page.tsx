@@ -13,6 +13,18 @@ export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.tagline}`,
   description: SITE.description,
   alternates: { canonical: "/" },
+  openGraph: {
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    type: "website",
+    images: [{ url: "/seed/galpao-industrial-hero.jpg", width: 1200, height: 630, alt: "Galpão industrial com equipamentos usados — Rodrigometal" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    images: ["/seed/galpao-industrial-hero.jpg"],
+  },
 };
 
 const CATEGORY_IMAGES: Record<string, string> = {
@@ -91,7 +103,7 @@ export default async function HomePage() {
             <svg viewBox="0 0 16 16" fill="currentColor" className="size-3.5" aria-hidden="true">
               <path d="M5 2L1 8l4 6" />
             </svg>
-            arraste
+            <span className="sr-only">deslize para ver mais categorias</span>
             <svg viewBox="0 0 16 16" fill="currentColor" className="size-3.5" aria-hidden="true">
               <path d="M11 2l4 6-4 6" />
             </svg>
@@ -217,4 +229,3 @@ export default async function HomePage() {
     </div>
   );
 }
-

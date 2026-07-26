@@ -1,3 +1,5 @@
+import { SITE } from "@/lib/site";
+
 type ListingJsonLdProps = {
   title: string;
   description: string | null;
@@ -16,7 +18,7 @@ type ListingJsonLdProps = {
 
 /** JSON-LD Product para SEO — vendidos usam "SoldOut" mas continuam indexados. */
 export function ListingJsonLd(props: ListingJsonLdProps) {
-  const url = `https://rodrigometal.com.br/anuncio/${props.slug}`;
+  const url = `${SITE.url}/anuncio/${props.slug}`;
   const sold = props.status === "sold";
   const data = {
     "@context": "https://schema.org",

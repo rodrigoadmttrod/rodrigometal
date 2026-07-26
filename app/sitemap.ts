@@ -5,7 +5,9 @@ import { eq, and, inArray } from "drizzle-orm";
 import { getAllCategorySlugs, getCategoryBySlug, getCitiesByCategory } from "@/lib/queries/category";
 import { getAllSellerSlugs } from "@/lib/queries/seller";
 
-const BASE = "https://rodrigometal.com.br";
+import { SITE } from "@/lib/site";
+
+const BASE = SITE.url;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileMenu } from "./MobileMenu";
 
 const NAV = [
   { href: "/categoria/equipamentos-industriais", label: "Equipamentos industriais" },
@@ -16,6 +17,9 @@ export function Header() {
             <span className="font-heading text-xl font-extrabold tracking-tight text-brand-900 md:text-2xl">RODRIGO</span>
             <span className="font-heading text-xl font-extrabold tracking-tight text-accent md:text-2xl">METAL</span>
           </Link>
+
+          {/* Hamburger — mobile only */}
+          <MobileMenu />
 
           <form action="/buscar" className="hidden md:flex flex-1 max-w-2xl" role="search">
             <input

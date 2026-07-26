@@ -40,6 +40,7 @@ export async function getHomeData() {
       ...c,
       activeCount: Number(countMap.get(c.id) ?? 0),
     }))
+    .filter((c) => c.activeCount > 0)
     .sort((a, b) => (orderMap.get(a.slug) ?? 99) - (orderMap.get(b.slug) ?? 99));
 
   // Recent active listings (first 8) with cover image and seller name
@@ -130,6 +131,7 @@ export async function getHomeData() {
 
       return {
         ...s,
+        companyName: (s.companyName ?? "Vendedor").replace(/\s*\(Exemplo\)\s*$/i, ""),
         listingPhotoUrl,
         listingPhotoAlt,
         sellerCategories: sellerCats.map((c) => c.name),

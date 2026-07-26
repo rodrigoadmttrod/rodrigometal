@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = await getCategoryBySlug(slug);
   if (!cat) return { title: "Categoria não encontrada" };
   return {
-    title: `${cat.name} usados e novos | ${SITE.name}`,
-    description: cat.description ?? `Anúncios de ${cat.name} usados e novos. Negocie direto com o vendedor pelo WhatsApp.`,
+    title: `${cat.name} usados industriais`,
+    description: cat.description ?? `Compre e venda ${cat.name} usados industriais. Anúncios direto com o vendedor pelo WhatsApp.`,
     alternates: { canonical: `/categoria/${slug}` },
   };
 }

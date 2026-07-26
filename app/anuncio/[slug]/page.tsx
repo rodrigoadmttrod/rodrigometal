@@ -30,8 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const sold = listing.status === "sold";
   const archived = listing.status === "archived";
   const priceTxt = sold ? "Vendido" : formatPrice(listing.price, listing.priceOnRequest);
-  const title = `${listing.title} — ${priceTxt} | ${SITE.name}`;
-  const description = (listing.description ?? "").slice(0, 160);
+  const title = `${listing.title} — ${priceTxt}`;
+  const rawDesc = (listing.description ?? "").slice(0, 160);
+  const description = rawDesc.length === 160 ? rawDesc.replace(/[,\s]+$/, "") + "…" : rawDesc;
   const cover = listing.images[0]?.url;
   return {
     title,
@@ -41,10 +42,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     ...(archived ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
-      title,
+      title: `${listing.title} — ${priceTxt} | ${SITE.name}`,
       description,
       type: "website",
       images: cover ? [{ url: cover, width: 1200, height: 630, alt: listing.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: cover ? [cover] : undefined,
     },
   };
 }
@@ -80,7 +85,7 @@ export default async function ListingPage({ params }: Props) {
     : `Olá! Vi o anúncio "${listing.title}" no ${SITE.name} e tenho interesse. Ainda está disponível?`;
 
   const coverUrl = listing.images[0]?.url ?? null;
-  const canonicalUrl = `https://rodrigometal.com.br/anuncio/${listing.slug}`;
+  const canonicalUrl = `${SITE.url}/anuncio/${listing.slug}`;
 
   return (
     <main className="container py-6">
@@ -102,8 +107,8 @@ export default async function ListingPage({ params }: Props) {
       />
       <BreadcrumbJsonLd
         items={[
-          { name: "Início", url: "https://rodrigometal.com.br" },
-          ...(listing.categorySlug ? [{ name: catName, url: `https://rodrigometal.com.br/categoria/${listing.categorySlug}` }] : []),
+          { name: "Início", url: SITE.url },
+          ...(listing.categorySlug ? [{ name: catName, url: `${SITE.url}/categoria/${listing.categorySlug}` }] : []),
           { name: listing.title, url: canonicalUrl },
         ]}
       />
@@ -118,8 +123,8 @@ export default async function ListingPage({ params }: Props) {
       />
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[3fr_2fr]">
-        {/* Coluna esquerda: galeria + descrição + ficha técnica */}
-        <div>
+        {/* Coluna esquerda: galeria + descrição + ficha técnica — order-2 on mobile so title shows first */}
+        <div className="order-2 lg:order-1">
           <Gallery
             images={listing.images.map((i) => ({ url: i.url, altText: i.altText }))}
             title={listing.title}
@@ -142,8 +147,8 @@ export default async function ListingPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Coluna direita: preço + contato + vendedor */}
-        <div>
+        {/* Coluna direita: preço + contato + vendedor — order-1 on mobile so title shows first */}
+        <div className="order-1 lg:order-2">
           <div className="rounded-lg border border-line bg-white p-5 shadow-card">
             <div className="flex flex-wrap items-center gap-2">
               {sold && <SoldBadge />}

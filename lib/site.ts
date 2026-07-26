@@ -3,10 +3,10 @@ export const SITE = {
   tagline: "Marketplace industrial do Brasil",
   description:
     "Compre e venda sucata metálica, máquinas e equipamentos industriais. Anuncie grátis e negocie direto com o vendedor pelo WhatsApp.",
-  url: "https://rodrigometal.com.br",
+  url: "https://rodrigometal-hbqr.vercel.app",
   city: "São Paulo",
   state: "SP",
-  whatsapp: "5511999999999",
+  whatsapp: "5511940000000",
   email: "contato@rodrigometal.com.br",
 };
 

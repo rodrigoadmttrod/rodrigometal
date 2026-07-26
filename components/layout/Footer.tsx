@@ -39,7 +39,7 @@ export function Footer() {
       <div className="border-t border-white/5">
         <div className="mx-auto max-w-7xl px-4 py-4 text-xs text-[var(--color-footer-text)]/60 flex flex-col sm:flex-row gap-1 sm:justify-between">
           <span>© {new Date().getFullYear()} {SITE.name} — {SITE.city}/{SITE.state}. Todos os direitos reservados.</span>
-          <span>Plataforma em desenvolvimento — dados de demonstração.</span>
+          <span>Anuncie grátis e negocie direto com o vendedor.</span>
         </div>
       </div>
     </footer>
