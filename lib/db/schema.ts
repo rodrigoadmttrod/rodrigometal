@@ -11,6 +11,8 @@ import {
   tinyint,
   uniqueIndex,
   varchar,
+  bigint,
+  json,
 } from "drizzle-orm/mysql-core";
 
 // ─── categories ───────────────────────────────────────────────────────────
@@ -237,3 +239,14 @@ export type MagicLink = typeof magicLinks.$inferSelect;
 export type SocialPostLog = typeof socialPostsLog.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type InsertAuditLog = typeof auditLogs.$inferInsert;
+
+// ─── Telegram media group buffer (serverless-safe grouping) ───────────────
+export const telegramMediaGroups = mysqlTable("telegram_media_groups", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  chatId: bigint("chat_id", { mode: "number" }).notNull(),
+  fileIds: json("file_ids").$type<string[]>().notNull(),
+  caption: text("caption"),
+  createdAt: bigint("created_at", { mode: "number" }).notNull(),
+  processed: tinyint("processed").notNull().default(0),
+});
+export type TelegramMediaGroup = typeof telegramMediaGroups.$inferSelect;

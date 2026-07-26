@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
-import { listings, listingImages, listingSpecs, users, categories } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { listings, listingImages, listingSpecs, users, categories, telegramMediaGroups } from "@/lib/db/schema";
+import { eq, and, lt } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { uploadToR2 } from "@/lib/r2";
@@ -12,6 +12,9 @@ const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
 // Only the owner's chat ID can use this bot
 const OWNER_CHAT_ID = process.env.TELEGRAM_OWNER_CHAT_ID || "8791400518";
+
+// How long to wait for all photos in a media_group (ms)
+const MEDIA_GROUP_WINDOW_MS = 3000;
 
 // ─── Telegram helpers ──────────────────────────────────────────────────────
 
@@ -209,6 +212,49 @@ async function processListing(chatId: number, photoFileIds: string[], caption: s
   );
 }
 
+// ─── DB-based media group helpers ─────────────────────────────────────────
+
+async function upsertMediaGroup(mediaGroupId: string, chatId: number, fileId: string, caption: string) {
+  const existing = await db
+    .select()
+    .from(telegramMediaGroups)
+    .where(eq(telegramMediaGroups.id, mediaGroupId))
+    .limit(1);
+
+  if (existing.length > 0) {
+    const row = existing[0];
+    const updatedFileIds = [...row.fileIds, fileId];
+    const updatedCaption = row.caption || caption || null;
+    await db
+      .update(telegramMediaGroups)
+      .set({ fileIds: updatedFileIds, caption: updatedCaption })
+      .where(eq(telegramMediaGroups.id, mediaGroupId));
+    return { isFirst: false, fileIds: updatedFileIds, caption: updatedCaption ?? "" };
+  } else {
+    await db.insert(telegramMediaGroups).values({
+      id: mediaGroupId,
+      chatId,
+      fileIds: [fileId],
+      caption: caption || null,
+      createdAt: Date.now(),
+      processed: 0,
+    });
+    return { isFirst: true, fileIds: [fileId], caption };
+  }
+}
+
+async function markMediaGroupProcessed(mediaGroupId: string) {
+  await db
+    .update(telegramMediaGroups)
+    .set({ processed: 1 })
+    .where(eq(telegramMediaGroups.id, mediaGroupId));
+}
+
+async function cleanupOldMediaGroups() {
+  const cutoff = Date.now() - 60_000; // delete groups older than 1 min
+  await db.delete(telegramMediaGroups).where(lt(telegramMediaGroups.createdAt, cutoff));
+}
+
 // ─── POST handler ──────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -250,9 +296,37 @@ export async function POST(req: NextRequest) {
     if (!photo) return NextResponse.json({ ok: true });
 
     const caption = msg.caption || "";
+    const mediaGroupId: string | undefined = msg.media_group_id;
 
-    // Process each photo individually (serverless-safe — no shared memory between requests)
-    await processListing(chatId, [photo.file_id], caption);
+    if (mediaGroupId) {
+      // Upsert this photo into the DB buffer
+      const { isFirst, fileIds, caption: groupCaption } = await upsertMediaGroup(
+        mediaGroupId, chatId, photo.file_id, caption
+      );
+
+      if (isFirst) {
+        // First photo of the group: wait for the rest, then process
+        await new Promise((resolve) => setTimeout(resolve, MEDIA_GROUP_WINDOW_MS));
+
+        // Re-read the group from DB (other photos may have arrived during the wait)
+        const [group] = await db
+          .select()
+          .from(telegramMediaGroups)
+          .where(and(eq(telegramMediaGroups.id, mediaGroupId), eq(telegramMediaGroups.processed, 0)))
+          .limit(1);
+
+        if (group) {
+          await markMediaGroupProcessed(mediaGroupId);
+          await cleanupOldMediaGroups();
+          await processListing(chatId, group.fileIds, group.caption ?? "");
+        }
+        // If group is null, another request already processed it — do nothing
+      }
+      // Non-first photos: just added to DB, first-photo request will process all
+    } else {
+      // Single photo — process immediately
+      await processListing(chatId, [photo.file_id], caption);
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {
