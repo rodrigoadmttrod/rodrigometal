@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta industrial clara — laranja vivo como cor de ação, azul-aço só em texto/detalhes, verde EXCLUSIVO para contato */
+  --color-brand-50: oklch(0.97 0.013 240);
+  --color-brand-100: oklch(0.93 0.028 240);
+  --color-brand-600: oklch(0.45 0.09 245);
+  --color-brand-700: oklch(0.38 0.085 245);
+  --color-brand-800: oklch(0.31 0.075 245);
+  --color-brand-900: oklch(0.25 0.06 245);
+
+  /* Laranja vivo (≈ #f97316) para CTAs e destaque da marca */
+  --color-accent: oklch(0.7 0.19 45);
+  --color-accent-dark: oklch(0.62 0.19 40);
+
+  --color-whatsapp: oklch(0.62 0.17 150);
+  --color-whatsapp-dark: oklch(0.52 0.15 150);
+
+  --color-surface: oklch(0.965 0.003 90);
+  --color-surface-muted: oklch(0.94 0.004 90);
+  --color-ink: oklch(0.22 0.01 260);
+  --color-ink-muted: oklch(0.45 0.012 260);
+  --color-line: oklch(0.88 0.006 260);
+
+  --color-danger: oklch(0.55 0.2 25);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-archivo), "Archivo", var(--font-sans);
+
+  --shadow-card: 0 4px 16px rgb(0 0 0 / 0.06), 0 1px 4px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 12px 32px rgb(0 0 0 / 0.10), 0 4px 8px rgb(0 0 0 / 0.05);
+
+  /* Rodapé suave: cinza-azulado em vez de azul-marinho pesado */
+  --color-footer: oklch(0.35 0.03 250);
+  --color-footer-text: oklch(0.75 0.015 250);
+
+  --ease-out-snappy: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Títulos em Archivo — contraste tipográfico com o corpo (Inter).
+   Títulos de card (h3 pequenos) e h4–h6 continuam Inter para não pesar em texto pequeno. */
+h1,
+h2,
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+}
+
+/* Skeleton shimmer — loading state */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    oklch(0.92 0.004 90) 0%,
+    oklch(0.96 0.003 90) 50%,
+    oklch(0.92 0.004 90) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-lift {
+    transition: box-shadow 180ms var(--ease-out-snappy), transform 180ms var(--ease-out-snappy);
+  }
+  .card-lift:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+  /* Botões: feedback de toque em TODOS os botões e links clicáveis */
+  button:active,
+  .btn-press:active,
+  a[class*="rounded"]:active:not(.card-lift) {
+    transform: scale(0.97);
+    transition: transform 140ms var(--ease-out-snappy);
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "principles": {
+    "specs_opcionais_por_padrao": true,
+    "part_number_universal_opcional": true,
+    "bloco_aplicacao_por_anuncio": true,
+    "catalogo_expansivel": true
+  },
+  "specs_comuns": ["marca", "condicao", "cidade_estado", "preco", "fotos"],
+  "categorias": [
+    {
+      "nome": "Motores Elétricos",
+      "slug": "motores-eletricos",
+      "descricao": "Motores elétricos industriais usados e novos",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true, "exemplos": "WEG, Kohlbach, Eberle, Bufalo" },
+        { "key": "potencia", "label": "Potência", "unit": "cv ou kW", "opcional": true },
+        { "key": "polos", "label": "Polos", "unit": "", "opcional": true, "exemplos": "2, 4, 6, 8 (indica a rotação)" },
+        { "key": "rotacao", "label": "Rotação", "unit": "RPM", "opcional": true },
+        { "key": "tensao", "label": "Tensão", "unit": "V", "opcional": true, "exemplos": "220/380V, 440V" },
+        { "key": "carcaca", "label": "Carcaça", "unit": "", "opcional": true, "exemplos": "90, 160M, 280S/M" },
+        { "key": "fases", "label": "Fases", "unit": "", "opcional": true, "exemplos": "trifásico / monofásico" },
+        { "key": "grau_protecao_ip", "label": "Grau de proteção IP", "unit": "", "opcional": true, "exemplos": "IP55, IP21" }
+      ],
+      "aplicacao_tipica": "Acionamento de máquinas industriais, bombas, esteiras, ventiladores, compressores."
+    },
+    {
+      "nome": "Redutores e Motorredutores",
+      "slug": "redutores-e-motorredutores",
+      "descricao": "Redutores de velocidade e motorredutores industriais usados e novos",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true, "exemplos": "SEW-Eurodrive, Falk, Cestari, FLS, Güdel, Transmotécnica, IBR" },
+        { "key": "modelo", "label": "Modelo", "unit": "", "opcional": true, "exemplos": "K87, R37, TCN 350 (da plaqueta)" },
+        { "key": "reducao", "label": "Redução", "unit": "", "opcional": true, "exemplos": "1:71, 1:25, i=26" },
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "coaxial, cônico, sem-fim/coroa, helicoidal, planetário" },
+        { "key": "potencia_entrada", "label": "Potência de entrada", "unit": "cv", "opcional": true },
+        { "key": "rotacao_saida", "label": "Rotação de saída", "unit": "RPM", "opcional": true },
+        { "key": "num_estagios", "label": "Nº de estágios", "unit": "", "opcional": true }
+      ],
+      "aplicacao_tipica": "Betoneiras, misturadores, esteiras transportadoras, pontes rolantes, sistemas de irrigação pivô, guinchos."
+    },
+    {
+      "nome": "Bombas",
+      "slug": "bombas",
+      "descricao": "Bombas centrífugas, peristálticas e industriais usadas e novas",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true, "exemplos": "KSB, Grundfos, Netzsch, Imbil, Viking, ProMinent, Schneider" },
+        { "key": "modelo", "label": "Modelo", "unit": "", "opcional": true, "exemplos": "Meganorm 80-250, NEMO NM063 (da plaqueta)" },
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "centrífuga, helicoidal/cavidade progressiva, engrenagem, dosadora, peristáltica, pistão" },
+        { "key": "vazao", "label": "Vazão", "unit": "m³/h ou l/h", "opcional": true },
+        { "key": "pressao", "label": "Pressão / altura manométrica", "unit": "bar ou mca", "opcional": true },
+        { "key": "diametro", "label": "Diâmetro de sucção/recalque", "unit": "", "opcional": true },
+        { "key": "motor_acoplado", "label": "Motor acoplado", "unit": "cv", "opcional": true }
+      ],
+      "aplicacao_tipica": "Captação e transferência de água, poços, irrigação, processos industriais, combate a incêndio, dosagem química."
+    },
+    {
+      "nome": "Compressores",
+      "slug": "compressores",
+      "descricao": "Compressores de ar industriais usados e novos",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true, "exemplos": "Atlas Copco, Schulz, Chicago Pneumatic" },
+        { "key": "modelo", "label": "Modelo", "unit": "", "opcional": true, "exemplos": "GA30, SRP 3020 (da plaqueta)" },
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "parafuso, pistão" },
+        { "key": "potencia", "label": "Potência", "unit": "cv", "opcional": true },
+        { "key": "vazao", "label": "Vazão", "unit": "m³/min ou pcm", "opcional": true },
+        { "key": "pressao", "label": "Pressão", "unit": "bar", "opcional": true },
+        { "key": "ano", "label": "Ano", "unit": "", "opcional": true }
+      ],
+      "aplicacao_tipica": "Ar comprimido para linhas de produção, ferramentas pneumáticas, pintura, oficinas."
+    },
+    {
+      "nome": "Máquinas Operatrizes",
+      "slug": "maquinas-operatrizes",
+      "descricao": "Tornos, fresadoras, prensas, furadeiras — máquinas-ferramenta usadas e novas",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true, "exemplos": "Romi, Nardini, Bridgeport, Veker, Jundiaí" },
+        { "key": "modelo", "label": "Modelo", "unit": "", "opcional": true, "exemplos": "Tormax 30, Nodus ND-250 (da plaqueta)" },
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "torno mecânico/CNC, fresadora, prensa, furadeira" },
+        { "key": "capacidade", "label": "Capacidade / dimensão-chave", "unit": "", "opcional": true, "exemplos": "entre pontas mm, mesa mm, toneladas" },
+        { "key": "motor", "label": "Motor", "unit": "cv", "opcional": true },
+        { "key": "ano", "label": "Ano", "unit": "", "opcional": true }
+      ],
+      "aplicacao_tipica": "Usinagem, fabricação e reparo de peças, ferramentaria, produção metalúrgica."
+    },
+    {
+      "nome": "Ventiladores e Exaustores Industriais",
+      "slug": "ventiladores-e-exaustores",
+      "descricao": "Ventiladores e exaustores industriais usados e novos",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true },
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "centrífugo, axial" },
+        { "key": "vazao", "label": "Vazão", "unit": "m³/h", "opcional": true },
+        { "key": "potencia_motor", "label": "Potência do motor", "unit": "cv", "opcional": true },
+        { "key": "diametro", "label": "Diâmetro", "unit": "mm", "opcional": true }
+      ],
+      "aplicacao_tipica": "Exaustão, ventilação industrial, secagem, transporte pneumático."
+    },
+    {
+      "nome": "Caldeiras e Vasos de Pressão / Tanques",
+      "slug": "caldeiras-vasos-tanques",
+      "descricao": "Caldeiras, vasos de pressão, tanques e reservatórios industriais usados e novos",
+      "specs": [
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "caldeira, tanque, vaso de pressão, reservatório" },
+        { "key": "material", "label": "Material", "unit": "", "opcional": true, "exemplos": "aço inox, aço carbono" },
+        { "key": "capacidade", "label": "Capacidade / volume", "unit": "litros ou m³", "opcional": true },
+        { "key": "pressao_trabalho", "label": "Pressão de trabalho", "unit": "", "opcional": true }
+      ],
+      "aplicacao_tipica": "Armazenamento e processo industrial, aquecimento, geração de vapor. (Atenção: caldeira e vaso de pressão têm exigências legais de segurança – NR-13 – mas isso é do comprador; não é spec de anúncio.)"
+    },
+    {
+      "nome": "Rolamentos e Componentes de Transmissão",
+      "slug": "rolamentos-transmissao",
+      "descricao": "Rolamentos e componentes de mancal e transmissão industriais",
+      "specs": [
+        { "key": "marca", "label": "Marca", "unit": "", "opcional": true, "exemplos": "SKF, NSK, FAG, Timken" },
+        { "key": "codigo_referencia", "label": "Código/referência", "unit": "", "opcional": true, "exemplos": "6205, 22208 (spec-chave)" },
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "esferas, rolos, agulhas" },
+        { "key": "dimensoes", "label": "Dimensões", "unit": "mm", "opcional": true, "exemplos": "furo × externo × largura" }
+      ],
+      "aplicacao_tipica": "Substituição em motores, redutores, mancais e máquinas em geral."
+    },
+    {
+      "nome": "Válvulas e Tubulação Industrial",
+      "slug": "valvulas-tubulacao",
+      "descricao": "Válvulas e componentes de tubulação industrial usados e novos",
+      "specs": [
+        { "key": "tipo", "label": "Tipo", "unit": "", "opcional": true, "exemplos": "gaveta, esfera, borboleta, retenção" },
+        { "key": "material", "label": "Material", "unit": "", "opcional": true, "exemplos": "aço, ferro fundido, inox" },
+        { "key": "diametro_nominal", "label": "Diâmetro nominal", "unit": "DN", "opcional": true },
+        { "key": "pressao_nominal", "label": "Pressão nominal", "unit": "PN", "opcional": true }
+      ],
+      "aplicacao_tipica": "Controle de fluxo em tubulações, processos, saneamento."
+    },
+    {
+      "nome": "Sucata Metálica",
+      "slug": "sucata-metalica",
+      "descricao": "Sucata metálica e matéria-prima para reciclagem",
+      "specs": [
+        { "key": "material", "label": "Material", "unit": "", "opcional": true, "exemplos": "aço carbono, ferro fundido, cobre 1ª/2ª, alumínio, inox, latão" },
+        { "key": "quantidade_peso", "label": "Quantidade / peso", "unit": "t ou kg", "opcional": true },
+        { "key": "formato", "label": "Formato", "unit": "", "opcional": true, "exemplos": "prensada, granel, perfil, chapa, tubo, cavaco" },
+        { "key": "origem", "label": "Origem", "unit": "", "opcional": true }
+      ],
+      "aplicacao_tipica": "NÃO forçar aplicação específica. Sucata é matéria-prima para reciclagem/refusão/fabricação. Texto genérico: \"material para reciclagem, refusão ou reaproveitamento\"."
+    },
+    {
+      "nome": "Lotes e Desmonte",
+      "slug": "lotes-e-desmonte",
+      "descricao": "Categoria coringa para lotes, desmonte e conjuntos de equipamentos",
+      "specs": [
+        { "key": "conteudo", "label": "Conteúdo", "unit": "", "opcional": true, "exemplos": "descrição livre do que compõe o lote" },
+        { "key": "estado", "label": "Estado", "unit": "", "opcional": true, "exemplos": "para desmonte, para revisão, no estado" },
+        { "key": "quantidade_itens", "label": "Quantidade de itens", "unit": "", "opcional": true }
+      ],
+      "aplicacao_tipica": "Desmonte, retirada de peças, restauração, revenda por partes. Categoria para o que não se encaixa em item único."
+    }
+  ]
+}
