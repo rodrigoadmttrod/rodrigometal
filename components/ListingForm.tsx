@@ -247,7 +247,7 @@ export function ListingForm({ categories, userCity, userState, initialData }: Pr
           />
         </Field>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Categoria">
             <select
               value={categoryId}
@@ -303,7 +303,7 @@ export function ListingForm({ categories, userCity, userState, initialData }: Pr
 
       {/* Location */}
       <Section title="Localização">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <Field label="Cidade" required>
             <input
               type="text"
@@ -335,7 +335,7 @@ export function ListingForm({ categories, userCity, userState, initialData }: Pr
             const catSpec = categorySpecs.find((cs) => cs.label === spec.specKey);
             const isFromDict = !!catSpec;
             return (
-              <div key={idx} className="flex gap-2 items-center">
+              <div key={idx} className="grid grid-cols-[1fr_1fr_auto] gap-2 sm:grid-cols-[1fr_1fr_6rem_auto] items-center">
                 <input
                   type="text"
                   value={spec.specKey}
@@ -357,7 +357,7 @@ export function ListingForm({ categories, userCity, userState, initialData }: Pr
                   onChange={(e) => updateSpec(idx, "unit", e.target.value)}
                   placeholder="Unidade"
                   readOnly={isFromDict && !!catSpec?.unit}
-                  className={`w-24 rounded-xl border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent ${isFromDict && catSpec?.unit ? "bg-surface text-ink-muted" : "bg-white"}`}
+                  className={`hidden sm:block rounded-xl border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent ${isFromDict && catSpec?.unit ? "bg-surface text-ink-muted" : "bg-white"}`}
                 />
                 {specs.length > 1 && (
                   <button

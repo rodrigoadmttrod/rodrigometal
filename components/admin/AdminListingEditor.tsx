@@ -159,7 +159,7 @@ export function AdminListingEditor({ listing, specs, images, categories, adminId
               className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent resize-y"
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-semibold text-ink-muted mb-1 block">Categoria</label>
               <select
@@ -214,8 +214,8 @@ export function AdminListingEditor({ listing, specs, images, categories, adminId
               />
             </div>
           )}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="col-span-2">
+          <div className="grid grid-cols-[1fr_auto] gap-3">
+            <div>
               <label className="text-xs font-semibold text-ink-muted mb-1 block">Cidade</label>
               <input
                 type="text"
@@ -224,7 +224,7 @@ export function AdminListingEditor({ listing, specs, images, categories, adminId
                 className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
-            <div>
+            <div className="w-24">
               <label className="text-xs font-semibold text-ink-muted mb-1 block">UF</label>
               <select
                 value={state}
@@ -246,7 +246,7 @@ export function AdminListingEditor({ listing, specs, images, categories, adminId
         <h3 className="font-heading text-base font-bold text-ink mb-4">Ficha técnica</h3>
         <div className="space-y-2">
           {specRows.map((spec, idx) => (
-            <div key={idx} className="flex gap-2 items-center">
+            <div key={idx} className="grid grid-cols-[1fr_1fr_auto] gap-2 sm:grid-cols-[1fr_1fr_6rem_auto] items-center">
               <input
                 type="text"
                 value={spec.specKey}
@@ -266,7 +266,7 @@ export function AdminListingEditor({ listing, specs, images, categories, adminId
                 value={spec.unit}
                 onChange={(e) => updateSpec(idx, "unit", e.target.value)}
                 placeholder="Unidade"
-                className="w-24 rounded-xl border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                className="hidden sm:block rounded-xl border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
               <button
                 type="button"
