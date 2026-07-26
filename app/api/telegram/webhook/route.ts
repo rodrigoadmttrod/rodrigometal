@@ -7,17 +7,11 @@ import { revalidatePath } from "next/cache";
 import { uploadToR2 } from "@/lib/r2";
 import { SITE } from "@/lib/site";
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "7701901038:AAEn9m2rGVSoOa0eQe_vamvnWNV2bDC8VNk";
 const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
 // Only the owner's chat ID can use this bot
 const OWNER_CHAT_ID = process.env.TELEGRAM_OWNER_CHAT_ID || "8791400518";
-
-// In-memory buffer to group photos from the same media_group
-const mediaGroupBuffer = new Map<
-  string,
-  { photos: string[]; caption: string; chatId: number; timer: ReturnType<typeof setTimeout> }
->();
 
 // ─── Telegram helpers ──────────────────────────────────────────────────────
 
@@ -246,7 +240,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (!msg.photo) {
-      await sendMessage(chatId, "📸 Mande uma ou mais fotos do equipamento com a descrição na legenda.");
+      if (!msg.text?.startsWith("/")) {
+        await sendMessage(chatId, "📸 Mande uma foto do equipamento com a descrição na legenda.");
+      }
       return NextResponse.json({ ok: true });
     }
 
@@ -254,34 +250,9 @@ export async function POST(req: NextRequest) {
     if (!photo) return NextResponse.json({ ok: true });
 
     const caption = msg.caption || "";
-    const mediaGroupId: string | undefined = msg.media_group_id;
 
-    if (mediaGroupId) {
-      const existing = mediaGroupBuffer.get(mediaGroupId);
-      if (existing) {
-        existing.photos.push(photo.file_id);
-        if (caption && !existing.caption) existing.caption = caption;
-        clearTimeout(existing.timer);
-        existing.timer = setTimeout(async () => {
-          const group = mediaGroupBuffer.get(mediaGroupId);
-          if (group) {
-            mediaGroupBuffer.delete(mediaGroupId);
-            await processListing(chatId, group.photos, group.caption);
-          }
-        }, 2500);
-      } else {
-        const timer = setTimeout(async () => {
-          const group = mediaGroupBuffer.get(mediaGroupId);
-          if (group) {
-            mediaGroupBuffer.delete(mediaGroupId);
-            await processListing(chatId, group.photos, group.caption);
-          }
-        }, 2500);
-        mediaGroupBuffer.set(mediaGroupId, { photos: [photo.file_id], caption, chatId, timer });
-      }
-    } else {
-      await processListing(chatId, [photo.file_id], caption);
-    }
+    // Process each photo individually (serverless-safe — no shared memory between requests)
+    await processListing(chatId, [photo.file_id], caption);
 
     return NextResponse.json({ ok: true });
   } catch (error) {
