@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+
+// Vercel: allow up to 60s for this serverless function
+// (3s media-group wait + photo downloads + OpenAI vision + R2 uploads)
+export const maxDuration = 60;
+
 import { db } from "@/lib/db/client";
 import { listings, listingImages, listingSpecs, users, categories, telegramMediaGroups } from "@/lib/db/schema";
 import { eq, and, lt } from "drizzle-orm";
