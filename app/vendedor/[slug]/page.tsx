@@ -10,7 +10,7 @@ import { formatLocation, timeAgo } from "@/lib/format";
 import { SITE } from "@/lib/site";
 
 // ~6h como as demais páginas de conteúdo estável (spec 4.3)
-export const revalidate = 21600;
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 

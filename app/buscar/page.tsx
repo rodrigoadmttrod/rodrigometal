@@ -6,7 +6,7 @@ import { Pagination } from "@/components/Pagination";
 import { searchListings } from "@/lib/queries/category";
 import { SITE } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

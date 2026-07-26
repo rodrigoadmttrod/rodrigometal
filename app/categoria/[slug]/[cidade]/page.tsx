@@ -8,7 +8,7 @@ import { Pagination } from "@/components/Pagination";
 import { getCategoryBySlug, getCategoryListings, getCitiesByCategory } from "@/lib/queries/category";
 import { SITE } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ slug: string; cidade: string }>;

@@ -7,7 +7,7 @@ import { SellerCard } from "@/components/SellerCard";
 import { SITE } from "@/lib/site";
 
 // ISR: home revalida a cada 1 hora (spec 4.3)
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.tagline}`,

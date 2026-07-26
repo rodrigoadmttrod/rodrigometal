@@ -19,7 +19,7 @@ import { formatPrice, formatLocation, timeAgo } from "@/lib/format";
 import { SITE } from "@/lib/site";
 
 // ~6h (spec 4.3): anúncio quase não muda e a edição dispara revalidatePath sob demanda
-export const revalidate = 21600;
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
