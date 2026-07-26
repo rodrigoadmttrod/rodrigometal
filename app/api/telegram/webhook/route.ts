@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import OpenAI from "openai";
 import { db } from "@/lib/db/client";
 import { listings, listingImages, listingSpecs, users, categories, telegramMediaGroups } from "@/lib/db/schema";
 import { eq, and, lt } from "drizzle-orm";
@@ -101,8 +102,7 @@ const CATEGORY_SLUGS = [
 ] as const;
 
 async function analyzeWithAI(photoBase64List: string[], caption: string): Promise<ListingDraft> {
-  const forgeUrl = process.env.BUILT_IN_FORGE_API_URL || "";
-  const forgeKey = process.env.BUILT_IN_FORGE_API_KEY || "";
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   const imageParts = photoBase64List.slice(0, 4).map((b64) => ({
     type: "image_url" as const,
@@ -122,23 +122,19 @@ Se o texto mencionar preço, extraia em "price" (número em reais). Se não houv
     { type: "text" as const, text: caption ? `Texto do vendedor: "${caption}"` : "O vendedor não forneceu descrição. Use apenas as fotos." },
   ];
 
-  const response = await fetch(`${forgeUrl}/v1/chat/completions`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${forgeKey}` },
-    body: JSON.stringify({
-      model: "gpt-5-mini",
-      messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userContent }],
-      response_format: { type: "json_object" },
-      max_tokens: 1500,
-    }),
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userContent },
+    ],
+    response_format: { type: "json_object" },
+    max_tokens: 1500,
   });
 
-  if (!response.ok) throw new Error(`LLM error: ${response.status} ${await response.text()}`);
+  const parsed = JSON.parse(response.choices?.[0]?.message?.content || "{}") as ListingDraft;
 
-  const data = await response.json();
-  const parsed = JSON.parse(data.choices?.[0]?.message?.content || "{}") as ListingDraft;
-
-  if (!CATEGORY_SLUGS.includes(parsed.categorySlug as any)) parsed.categorySlug = "equipamentos-industriais";
+  if (!CATEGORY_SLUGS.includes(parsed.categorySlug as (typeof CATEGORY_SLUGS)[number])) parsed.categorySlug = "equipamentos-industriais";
   if (!["new", "used_good", "used_fair", "scrap"].includes(parsed.itemCondition)) parsed.itemCondition = "used_good";
   if (!parsed.title) parsed.title = "Equipamento industrial";
   if (!parsed.description) parsed.description = caption || "Equipamento industrial usado.";
@@ -300,7 +296,7 @@ export async function POST(req: NextRequest) {
 
     if (mediaGroupId) {
       // Upsert this photo into the DB buffer
-      const { isFirst, fileIds, caption: groupCaption } = await upsertMediaGroup(
+      const { isFirst } = await upsertMediaGroup(
         mediaGroupId, chatId, photo.file_id, caption
       );
 
