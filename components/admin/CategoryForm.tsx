@@ -8,7 +8,7 @@ interface CategoryData {
   id?: string;
   name: string;
   slug: string;
-  description: string;
+  description: string | null;
   isActive: boolean;
 }
 

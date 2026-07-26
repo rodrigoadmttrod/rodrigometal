@@ -11,7 +11,7 @@ type Listing = {
   slug: string;
   price: string | null;
   priceOnRequest: boolean;
-  itemCondition: string;
+  itemCondition: string | null;
   city: string | null;
   state: string | null;
   status: string;
@@ -176,7 +176,7 @@ export function AdminListingEditor({ listing, specs, images, categories, adminId
             <div>
               <label className="text-xs font-semibold text-ink-muted mb-1 block">Condição</label>
               <select
-                value={itemCondition}
+                value={itemCondition ?? ""}
                 onChange={(e) => setItemCondition(e.target.value)}
                 className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent bg-white"
               >

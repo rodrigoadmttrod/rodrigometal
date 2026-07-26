@@ -13,11 +13,11 @@ export default async function AdminHome() {
   const [auditCount] = await db.select({ count: sql`COUNT(*)` }).from(auditLogs);
 
   const stats = [
-    { label: "Categorias", value: catCount.count, href: "/admin/categorias", icon: "📁" },
-    { label: "Specs no dicionário", value: specCount.count, href: "/admin/categorias", icon: "📋" },
-    { label: "Usuários", value: userCount.count, href: "/admin/usuarios", icon: "👤" },
-    { label: "Anúncios", value: listingCount.count, href: "/admin/anuncios", icon: "📦" },
-    { label: "Registros de auditoria", value: auditCount.count, href: "/admin/auditoria", icon: "🔍" },
+    { label: "Categorias", value: Number(catCount.count), href: "/admin/categorias", icon: "📁" },
+    { label: "Specs no dicionário", value: Number(specCount.count), href: "/admin/categorias", icon: "📋" },
+    { label: "Usuários", value: Number(userCount.count), href: "/admin/usuarios", icon: "👤" },
+    { label: "Anúncios", value: Number(listingCount.count), href: "/admin/anuncios", icon: "📦" },
+    { label: "Registros de auditoria", value: Number(auditCount.count), href: "/admin/auditoria", icon: "🔍" },
   ];
 
   return (

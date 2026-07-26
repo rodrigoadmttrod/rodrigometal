@@ -32,7 +32,7 @@ async function downloadTelegramFile(fileId: string): Promise<{ url: string; buff
 async function uploadToStorage(buffer: Buffer, filename: string): Promise<string> {
   // Upload via the Manus storage proxy
   const formData = new FormData();
-  formData.append("file", new Blob([buffer], { type: "image/jpeg" }), filename);
+  formData.append("file", new Blob([new Uint8Array(buffer)], { type: "image/jpeg" }), filename);
   
   const uploadRes = await fetch(`${process.env.BUILT_IN_FORGE_API_URL || ""}/api/v1/storage/upload`, {
     method: "POST",

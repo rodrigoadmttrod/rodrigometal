@@ -53,7 +53,8 @@ export async function createUser(input: {
     return { ok: false, error: "Este telefone já tem conta. Entre com seu e-mail e senha — se não lembra a senha, recupere pelo WhatsApp.", code: "PHONE_EXISTS" } as const;
   }
 
-  const passwordHash = await bcrypt.hash(input.password, 10);
+  const salt = await bcrypt.genSalt(10);
+  const passwordHash = await bcrypt.hash(input.password, salt);
   const id = randomUUID();
   const baseSlug = slugify(input.companyName || input.name);
   const slug = `${baseSlug}-${id.slice(0, 6)}`;

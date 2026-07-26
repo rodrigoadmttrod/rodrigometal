@@ -11,7 +11,7 @@ type User = {
   phoneE164: string;
   city: string | null;
   state: string | null;
-  description: text | null;
+  description: string | null;
   isVerified: boolean;
   isActive: boolean;
   role: string;

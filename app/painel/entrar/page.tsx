@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 export default function EntrarPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const callbackUrl = params.get("callbackUrl") || "/painel";
+  const callbackUrl = params?.get("callbackUrl") || "/painel";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");

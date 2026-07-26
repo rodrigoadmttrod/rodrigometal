@@ -14,7 +14,7 @@ export function FilterBar({ basePath, states }: Props) {
 
   const update = useCallback(
     (key: string, value: string) => {
-      const params = new URLSearchParams(sp.toString());
+      const params = new URLSearchParams(sp?.toString() || "");
       if (value) params.set(key, value);
       else params.delete(key);
       // reset page on filter change
@@ -25,9 +25,9 @@ export function FilterBar({ basePath, states }: Props) {
     [router, sp, basePath]
   );
 
-  const state = sp.get("estado") ?? "";
-  const minPrice = sp.get("min") ?? "";
-  const maxPrice = sp.get("max") ?? "";
+  const state = sp?.get("estado") ?? "";
+  const minPrice = sp?.get("min") ?? "";
+  const maxPrice = sp?.get("max") ?? "";
 
   return (
     <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-line bg-white p-4 shadow-card">
